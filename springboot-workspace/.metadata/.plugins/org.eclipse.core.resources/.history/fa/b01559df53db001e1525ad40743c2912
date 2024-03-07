@@ -1,0 +1,17 @@
+package com.example.part01;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+@Controller
+public class Hello {
+
+	//http://localhost:8090/hello
+	@ResponseBody
+	@GetMapping("/hello")
+	public String process() {
+		log.info("info","hello world");
+		return "hello world";
+	}
+}

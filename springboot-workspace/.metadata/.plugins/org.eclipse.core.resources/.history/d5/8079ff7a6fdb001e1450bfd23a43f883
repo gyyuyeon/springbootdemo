@@ -1,0 +1,5 @@
+package com.company.todo.dto;
+
+public class TodoDTO {
+
+}

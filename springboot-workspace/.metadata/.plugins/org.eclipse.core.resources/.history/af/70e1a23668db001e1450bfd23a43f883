@@ -1,0 +1,20 @@
+package com.example.part05;
+
+import org.springframework.web.bind.annotation.RestController;
+
+import lombok.extern.slf4j.Slf4j;
+
+// [ResponseEntity 작성방법]
+// 1. 생성자 패턴
+
+// 2. 빌더 패턴
+
+
+@Slf4j
+@RestController
+public class TestResponseController {
+	
+	public ResponseEntity<T> helloCall(){
+		
+	}
+}
