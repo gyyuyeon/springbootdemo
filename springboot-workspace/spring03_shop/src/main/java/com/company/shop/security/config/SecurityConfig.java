@@ -2,6 +2,7 @@ package com.company.shop.security.config;
 
 import javax.security.sasl.AuthorizeCallback;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -13,7 +14,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.company.shop.members.repository.MembersRepository;
 import com.company.shop.security.jwt.JwtAuthenticationFilter;
+import com.company.shop.security.jwt.JwtAuthorizationFilter;
 import com.mysql.cj.Session;
 //[1] POSTMAN에서 테스트
 //POST http://localhost:8090/login
@@ -24,6 +27,9 @@ import com.mysql.cj.Session;
 @Configuration // 해당 클래스를 환경설정(configuration)으로 등록
 @EnableWebSecurity
 public class SecurityConfig {
+	
+	@Autowired
+	private MembersRepository membersRepository;
 	
    @Bean
    public BCryptPasswordEncoder encodePwd() {
@@ -57,8 +63,15 @@ public class SecurityConfig {
 	   @Override
 	   public void configure(HttpSecurity http) throws Exception{
 		   AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
+		   
+		   //addFilter() : FilterComparator에 등록되어 있는 Filter들을 활성화할 때 사용
+		   //adddFilterBefore(), addFilterAfter() : CustomFilter를 등록할 때 사용
+		   
 		   //인증 필터 등록
 		   http.addFilter(new JwtAuthenticationFilter(authenticationManager));
+		   
+		   //인가 필터 등록
+		   http.addFilter(new JwtAuthorizationFilter(authenticationManager,membersRepository));
 	   }
    }
 }//end class

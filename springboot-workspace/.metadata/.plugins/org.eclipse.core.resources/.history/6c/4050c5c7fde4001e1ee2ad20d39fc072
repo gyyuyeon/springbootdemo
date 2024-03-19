@@ -1,0 +1,14 @@
+package com.company.shop.security.jwt;
+
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+//Authentication(인증)
+public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
+	private AuthenticationManager authManager;
+	
+	public JwtAuthenticationFilter(AuthenticationManager authManager) {
+		this.authManager = authManager;
+	}
+}

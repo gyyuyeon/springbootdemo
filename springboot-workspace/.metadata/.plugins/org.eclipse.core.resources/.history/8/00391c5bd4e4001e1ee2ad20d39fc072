@@ -1,0 +1,5 @@
+package com.company.shop.members.repository;
+
+public interface MembersRepository {
+
+}

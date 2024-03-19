@@ -1,0 +1,6 @@
+package com.company.shop.security.jwt;
+
+//Authentication(인증)
+public class JwtAuthenticationFilter {
+
+}

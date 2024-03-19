@@ -1,0 +1,42 @@
+package com.company.shop.security.jwt;
+
+
+
+import java.io.BufferedReader;
+import java.io.IOException;
+
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+//Authentication(인증)
+public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
+   private AuthenticationManager authManager;
+
+   public JwtAuthenticationFilter(AuthenticationManager authManager) {
+      this.authManager = authManager;
+   }
+    
+   @Override
+   public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) 
+         throws AuthenticationException{
+         
+     
+      
+        System.out.println("JwtAuthenticationFilter => login 요청처리를 시작함");
+        try {
+	        BufferedReader br = request.getReader();
+	        String input =null;
+	        while((input=br.readLine())!=null)
+	        	System.out.println(input);
+        }catch (IOException e) {
+			e.printStackTrace();
+		}
+        return null;
+      }
+}// end class

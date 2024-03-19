@@ -1,0 +1,83 @@
+package com.company.shop.security.jwt;
+
+
+
+import java.io.BufferedReader;
+import java.io.IOException;
+
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.company.shop.members.dto.MembersDTO;
+import com.company.shop.security.service.PrincipalDetails;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
+//Authentication(인증)
+public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
+   private AuthenticationManager authManager;
+   private Authentication authentication;
+
+   public JwtAuthenticationFilter(AuthenticationManager authManager) {
+      this.authManager = authManager;
+   }
+    
+   @Override
+   public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) 
+         throws AuthenticationException{
+         
+     
+      
+        System.out.println("JwtAuthenticationFilter => login 요청처리를 시작함");
+        try {
+//	        BufferedReader br = request.getReader();
+//	        String input =null;
+//	        while((input=br.readLine())!=null)
+//	        	System.out.println(input);
+        	
+        	ObjectMapper om = new ObjectMapper();
+        	//스트림을 통해서 읽어온 json을 memberDTO러 객체화및 각각 멤버변수에 넣는것
+        	MembersDTO membersDTO = om.readValue(request.getInputStream(), MembersDTO.class);
+        	log.info("memberEmail:{}, memberPass:{}",membersDTO.getMemberEmail(), membersDTO.getMemberPass());
+        
+        	UsernamePasswordAuthenticationToken authenticationToken =
+        			new UsernamePasswordAuthenticationToken(membersDTO.getMemberEmail(), membersDTO.getMemberPass());
+        	
+        	authentication = authManager.authenticate(authenticationToken);
+        	log.info("authentication:{}",authentication.getDetails());
+        	log.info("authentication:{}",authentication.getPrincipal());
+        	
+        	PrincipalDetails principalDetails = (PrincipalDetails)authentication.getPrincipal();
+        	log.info("로그인 완료됨(인증):{} {}",principalDetails.getUsername(),principalDetails.getPassword());
+        	
+        }catch (IOException e) {
+			e.printStackTrace();
+		}
+        return null;
+      }
+     
+   @Override
+	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
+			Authentication authResult) throws IOException, ServletException {
+		// TODO Auto-generated method stub
+		super.successfulAuthentication(request, response, chain, authResult);
+	}
+   
+   @Override
+	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+			AuthenticationException failed) throws IOException, ServletException {
+		// TODO Auto-generated method stub
+		super.unsuccessfulAuthentication(request, response, failed);
+	}
+     
+   		
+}// end class

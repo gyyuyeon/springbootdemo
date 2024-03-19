@@ -19,6 +19,9 @@ public class PrincipalDetailesService implements UserDetailsService {
 	@Autowired
 	private MembersRepository membersRepository;
 
+	//1. AuthenticationProvider에서 loadUserByUsername(String username)을 호출한다.
+	//2. loadUserByUsername(String username)에서는 DB에서 username에 해당하는 데이터를 검색해서 UserDetails에 담아서 리턴해준다.
+	//3. AuthenticationProvider에서 UserDetailes받아서 Authentication에 저장을 함으로써 결국 Security Session에 저장을 한다.	
 	@Override
 	public UserDetails loadUserByUsername(String memberEmail) throws UsernameNotFoundException {
 		log.info("PrincipalService username:{}",memberEmail);
@@ -28,11 +31,11 @@ public class PrincipalDetailesService implements UserDetailsService {
 				membersDTO.getMemberEmail(),membersDTO.getMemberPass(),
 				membersDTO.getMemberName());
 		
-		if(membersDTO == null) {
-			throw new UsernameNotFoundException(memberEmail);
-		}
-		return null;
-	}
+		if (membersDTO == null) {
+	         throw new UsernameNotFoundException(memberEmail);
+	      }
+	      return new PrincipalDetails(membersDTO);
+	   }
 
 	
 

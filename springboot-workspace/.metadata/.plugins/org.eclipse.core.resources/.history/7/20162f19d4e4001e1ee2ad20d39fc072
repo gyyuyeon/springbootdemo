@@ -1,0 +1,10 @@
+package com.company.shop.common.common;
+
+public class WrongEmailPasswordException extends RuntimeException{
+
+	public WrongEmailPasswordException() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	
+}

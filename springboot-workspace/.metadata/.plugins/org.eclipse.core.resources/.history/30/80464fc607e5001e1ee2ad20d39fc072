@@ -1,0 +1,24 @@
+package com.company.shop.security.service;
+
+import java.util.Collection;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
+@Service
+public class PrincipalDetailesService implements UserDetailsService {
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		log.info("PrincipalService username:{}",username);
+		return null;
+	}
+
+	
+
+}

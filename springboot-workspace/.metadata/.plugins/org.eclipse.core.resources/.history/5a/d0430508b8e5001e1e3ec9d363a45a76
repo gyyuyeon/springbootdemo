@@ -1,0 +1,42 @@
+package com.company.shop.security.jwt;
+
+import java.io.IOException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+
+import com.company.shop.members.repository.MembersRepository;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
+
+	@Autowired
+	private MembersRepository membersRepository;
+	
+	public JwtAuthorizationFilter(AuthenticationManager authManager) {
+		super(authManager);
+		
+	}
+	
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+		log.info("인가가 필요한 주소 요청이 실행되는 메소드 : doFilterInternal()");
+		
+		//1. 권한이나 인가가 필요한 요청이 전달된다.
+		String jwtHeader = request.getHeader("Authorization");
+		log.info("jwtHeader:{}",jwtHeader);
+	}
+
+	
+	
+	
+	
+}

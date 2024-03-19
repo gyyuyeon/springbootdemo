@@ -1,0 +1,21 @@
+package com.company.shop.security.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration // 해당 클래스를 환경설정(configuration)으로 등록
+public class SecurityConfig {
+	
+   @Bean
+   public BCryptPasswordEncoder encodePwd() {
+      return new BCryptPasswordEncoder();
+   }
+   
+   @Bean
+   public SecurityFilterChain filterChan(HttpSecurity http) {
+	   http.csrf((csrf) -> csrf.disable());
+   }
+}//end class

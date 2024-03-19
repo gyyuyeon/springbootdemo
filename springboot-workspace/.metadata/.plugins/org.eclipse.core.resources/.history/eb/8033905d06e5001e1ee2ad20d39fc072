@@ -1,0 +1,58 @@
+package com.company.shop.security.jwt;
+
+
+
+import java.io.BufferedReader;
+import java.io.IOException;
+
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.company.shop.members.dto.MembersDTO;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
+//Authentication(인증)
+public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
+   private AuthenticationManager authManager;
+
+   public JwtAuthenticationFilter(AuthenticationManager authManager) {
+      this.authManager = authManager;
+   }
+    
+   @Override
+   public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) 
+         throws AuthenticationException{
+         
+     
+      
+        System.out.println("JwtAuthenticationFilter => login 요청처리를 시작함");
+        try {
+//	        BufferedReader br = request.getReader();
+//	        String input =null;
+//	        while((input=br.readLine())!=null)
+//	        	System.out.println(input);
+        	
+        	ObjectMapper om = new ObjectMapper();
+        	//스트림을 통해서 읽어온 json을 memberDTO러 객체화및 각각 멤버변수에 넣는것
+        	MembersDTO membersDTO = om.readValue(request.getInputStream(), MembersDTO.class);
+        	log.info("memberEmail:{}, memberPass:{}",membersDTO.getMemberEmail(), membersDTO.getMemberPass());
+        
+        	UsernamePasswordAuthenticationToken authenticationToken =
+        			new UsernamePasswordAuthenticationToken(membersDTO.getMemberEmail(), membersDTO.getMemberPass());
+        	
+        	Authentication authentication = authManager.authenticate(authenticationToken)
+        	
+        }catch (IOException e) {
+			e.printStackTrace();
+		}
+        return null;
+      }
+}// end class

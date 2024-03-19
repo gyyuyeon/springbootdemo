@@ -1,0 +1,11 @@
+package com.company.shop.security.config;
+
+import org.springframework.context.annotation.Configuration;
+
+@Configuration // 해당클래스를 Configuration으로 (환경설정)으로 등록
+public class SecurityConfig {
+
+	public BCryptPasswordEncoder encodePwd() {
+		return new BCryptPasswordEncoder();
+	}
+}

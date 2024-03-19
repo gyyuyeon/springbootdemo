@@ -1,0 +1,5 @@
+package com.company.shop.members.controller;
+
+public class MembersController {
+
+}
